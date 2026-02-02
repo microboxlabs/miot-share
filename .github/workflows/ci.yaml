@@ -59,6 +59,7 @@ jobs:
   build:
     name: Build and Test
     runs-on: ubuntu-latest
+    environment: ${{ startsWith(github.ref, 'refs/tags/v') && 'prod' || 'dev' }}
 
     permissions:
       contents: read
@@ -66,6 +67,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
       is-release: ${{ steps.version.outputs.is-release }}
+      environment: ${{ startsWith(github.ref, 'refs/tags/v') && 'prod' || 'dev' }}
 
     steps:
       - name: Checkout repository
@@ -94,7 +96,7 @@ jobs:
           fi
 
       - name: Build with Maven
-        run: mvn -B verify --file pom.xml
+        run: mvn -B verify -Dacs.port=${{ vars.ACS_PORT }} -Dacs.host=${{ vars.ACS_HOST }} --file pom.xml
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
@@ -117,6 +119,7 @@ jobs:
     needs: build
     # Only publish releases (tags starting with 'v')
     if: startsWith(github.ref, 'refs/tags/v')
+    environment: prod
 
     permissions:
       contents: read
@@ -182,6 +185,7 @@ jobs:
     name: Publish Docker Images
     runs-on: ubuntu-latest
     needs: build
+    environment: ${{ needs.build.outputs.environment }}
 
     permissions:
       contents: read
