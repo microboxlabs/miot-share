@@ -48,6 +48,9 @@ env:
   DOCKERHUB_REGISTRY: docker.io
   # Image name derived from repository (e.g., microboxlabs/miot-share)
   IMAGE_NAME: ${{ github.repository }}
+  AMP_SHARE_REPO: javascript-console-share-0.7-SNAPSHOT.amp
+  AMP_SHARE_PATH: Alfresco/alfresco-docker-installer/master/generators/app/templates/addons/amps_share
+  RAW_GITHUB_URL: https://raw.githubusercontent.com
   # Java/Maven configuration
   JAVA_VERSION: '17'
   JAVA_DISTRIBUTION: 'temurin'
@@ -79,6 +82,13 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
           cache: maven
+
+      - name: Install AMP packages
+        run: |
+          mkdir -p .extensions/amps
+          curl -O '${{ env.RAW_GITHUB_URL }}/${{ env.AMP_SHARE_PATH }}/${{ env.AMP_SHARE_REPO }}'
+          mv ${{ env.AMP_SHARE_REPO }} .extensions/amps
+
 
       - name: Determine version
         id: version
