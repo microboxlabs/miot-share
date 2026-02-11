@@ -50,6 +50,11 @@
             <artifactId>share</artifactId>
             <classifier>classes</classifier>
         </dependency>
+        <dependency>
+            <groupId>org.orderofthebee.support-tools</groupId>
+            <artifactId>support-tools-share</artifactId>
+            <version>1.2.3.0</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -66,12 +71,7 @@
                 <version>${alfresco.platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.orderofthebee.support-tools</groupId>
-                <artifactId>support-tools-share</artifactId>
-                <version>1.2.3.0</version>
-            </dependency>
+            </dependency>          
             <!-- Redefine the following Share dependencies as they have different version numbers than platform.
                  They are defined in alfresco-platform-distribution... -->
             <dependency>
